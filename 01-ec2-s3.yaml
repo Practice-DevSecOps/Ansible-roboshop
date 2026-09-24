@@ -1,0 +1,23 @@
+- name: create ec2 and r53
+  hosts: local
+  connection: local
+  vars:
+    ami_id: ami-0220d79f3f480ecf5
+    sg_id: sg-0bd793091143bf7ee # replace with your SG ID
+    zone_id: "Z020162294XCQW5F7PQT" # replace with your ID
+    domain_name: "gadekari.online"
+    # we can pass instances through command line using -e
+    instances: 
+    - mongodb
+  tasks:
+  - name: create ec2 instance
+    amazon.aws.ec2_instance:
+      name: "{{ item }}"
+      instance_type: t3.micro
+      security_group: "{{ sg_id }}"
+      image_id: "{{ ami_id }}"
+      tags:
+        Name: "{{ item }}"
+    loop: "{{ instances }}"
+    register: ec2_output
+  
