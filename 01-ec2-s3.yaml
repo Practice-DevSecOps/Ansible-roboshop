@@ -21,7 +21,7 @@
         Name: "{{ item }}"
     loop: "{{ instances }}"
     register: ec2_output
-     tasks:
+  tasks:
   - name: create ec2 instance
     amazon.aws.ec2_instance:
       name: "{{ item }}"
